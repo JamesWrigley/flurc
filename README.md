@@ -1,2 +1,2 @@
 # flurc
-A library implementing a circular buffer
+A library implementing a circular buffer, written in C++.
