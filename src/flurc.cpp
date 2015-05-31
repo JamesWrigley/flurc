@@ -17,31 +17,58 @@
  *                                                                                *
  *********************************************************************************/
 
-#ifndef FLURC_H
-#define FLURC_H
-
-#include <vector>
+template<typename Data>
+flurc<Data>::flurc(int size)
+{
+  // We use the one-extra-slot approach to distinguish between full and empty
+  // buffers.
+  buffer.reserve(size + 1);
+  head = buffer.begin();
+  tail = buffer.begin();
+}
 
 template<typename Data>
-class flurc
+bool flurc<Data>::empty()
 {
-  public:
-    flurc(int);
+  return head == tail;
+}
 
-    void push(Data);
-    Data pop();
-    bool empty();
-    bool full();
-    int length();
+template<typename Data>
+bool flurc<Data>::full()
+{
+  return std::distance(tail, head) == -1;
+}
 
-  private:
-    void increment(typename std::vector<Data>::iterator);
+template<typename Data>
+void flurc<Data>::increment(typename std::vector<Data>::iterator iterator)
+{
+  if (iterator == --buffer.end())
+    {
+      iterator = buffer.begin();
+    }
+  else
+    {
+      ++iterator;
+    }
+}
 
-    std::vector<Data> buffer;
-    typename std::vector<Data>::iterator head;
-    typename std::vector<Data>::iterator tail;
-};
+template<typename Data>
+int flurc<Data>::length()
+{
+  return std::distance(tail, head);
+}
 
-#include "flurc.cpp"
+template<typename Data>
+Data flurc<Data>::pop()
+{
+  Data contents = *tail;
+  increment(tail);
+  return contents;
+}
 
-#endif
+template<typename Data>
+void flurc<Data>::push(Data contents)
+{
+  *head = contents;
+  increment(head);
+}
