@@ -23,23 +23,25 @@
 #include <vector>
 
 template<typename Data>
-class flurc
-{
+using bufferIterator = typename std::vector<Data>::iterator;
+
+template<typename Data>
+class flurc {
   public:
     flurc(int);
 
-    void push(Data);
-    Data pop();
     bool empty();
     bool full();
     int length();
+    Data pop();
+    void push(Data);
 
   private:
-    void increment(typename std::vector<Data>::iterator);
+    bufferIterator<Data> increment(bufferIterator<Data>);
 
     std::vector<Data> buffer;
-    typename std::vector<Data>::iterator head;
-    typename std::vector<Data>::iterator tail;
+    bufferIterator<Data> read;
+    bufferIterator<Data> write;
 };
 
 #include "flurc.cpp"

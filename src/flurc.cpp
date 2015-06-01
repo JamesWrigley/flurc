@@ -18,57 +18,56 @@
  *********************************************************************************/
 
 template<typename Data>
-flurc<Data>::flurc(int size)
-{
-  // We use the one-extra-slot approach to distinguish between full and empty
-  // buffers.
-  buffer.reserve(size + 1);
-  head = buffer.begin();
-  tail = buffer.begin();
+flurc<Data>::flurc(int size) {
+    // We use the one-extra-slot approach to distinguish between full and empty
+    // buffers.
+    buffer.reserve(size + 1);
+    write = buffer.begin();
+    read = buffer.begin();
 }
 
 template<typename Data>
-bool flurc<Data>::empty()
-{
-  return head == tail;
+bool flurc<Data>::empty() {
+    return std::distance(write, read) == 0;
 }
 
 template<typename Data>
-bool flurc<Data>::full()
-{
-  return std::distance(tail, head) == -1;
+bool flurc<Data>::full() {
+    int distance = std::distance(write, read);
+    return distance == 1 || distance == -(buffer.capacity() - 1);
 }
 
 template<typename Data>
-void flurc<Data>::increment(typename std::vector<Data>::iterator iterator)
-{
-  if (iterator == --buffer.end())
-    {
-      iterator = buffer.begin();
-    }
-  else
-    {
-      ++iterator;
+bufferIterator<Data> flurc<Data>::increment(bufferIterator<Data> iterator) {
+    if (iterator == --buffer.end()) {
+        return buffer.begin();
+    } else {
+        return ++iterator;
     }
 }
 
 template<typename Data>
-int flurc<Data>::length()
-{
-  return std::distance(tail, head);
+int flurc<Data>::length() {
+    return std::distance(read, write);
 }
 
 template<typename Data>
-Data flurc<Data>::pop()
-{
-  Data contents = *tail;
-  increment(tail);
-  return contents;
+Data flurc<Data>::pop() {
+    if (empty()) {
+        throw std::out_of_range("Empty buffer");
+    } else {
+        Data contents = *read;
+        read = increment(read);
+        return contents;
+    }
 }
 
 template<typename Data>
-void flurc<Data>::push(Data contents)
-{
-  *head = contents;
-  increment(head);
+void flurc<Data>::push(Data contents) {
+    if (full()) {
+        throw std::out_of_range("Full buffer");
+    } else {
+        *write = contents;
+        write = increment(write);
+    }
 }
