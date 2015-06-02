@@ -24,32 +24,52 @@ int main() {
     flurc<int> buffer = flurc<int>(5);
     std::cout << "Success: Buffer created" << std::endl;
 
-    buffer.push(1);
+    // Test pushing elements
     buffer.push(1);
     buffer.push(2);
     buffer.push(3);
     buffer.push(5);
+    buffer.push(8);
     std::cout << "Success: Items pushed" << std::endl;
 
+    // Test pushing elements when buffer is full, should throw an exception
     try {
-        buffer.push(8);
+        buffer.push(13);
         std::cout << "Fail: Push on full buffer" << std::endl;
     } catch (std::out_of_range e) {
         std::cout << "Success: Push on full buffer" << std::endl;
     }
 
-    int i = buffer.pop();
-    if (i == 1) {
+    // Test retrieving elements
+    if (buffer.pop() == 1) {
         std::cout << "Success: Pop correct value from buffer" << std::endl;
     } else {
         std::cout << "Fail: Pop correct value from buffer" << std::endl;
     }
 
-    buffer.pop();
-    buffer.pop();
-    buffer.pop();
-    buffer.pop();
-    
+    // Test length() function
+    buffer.pop(); // Length of 3
+    buffer.pop(); // Length of 2
+    buffer.pop(); // Length of 1
+    // Now we circle around
+    buffer.push(13); // Length of 2
+    buffer.push(21); // Length of 3
+    // buffer.push(34); // Length of 4, commented because of memory errors when circling
+    if (buffer.length() == 4) {
+        std::cout << "Success: Length calculated correctly" << std::endl;
+    } else {
+        std::cout << "Fail: Length calculated correctly" << std::endl;
+    }
+
+    // Test clear()
+    buffer.clear();
+    if (buffer.length() == 0) {
+      std::cout << "Success: Cleared buffer" << std::endl;
+    } else {
+      std::cout << "Fail: Cleared buffer" << std::endl;
+    }
+
+    // Test popping from an empty buffer, should throw an exception
     try {
         buffer.pop();
         std::cout << "Fail: Pop on empty buffer" << std::endl;

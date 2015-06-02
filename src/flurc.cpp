@@ -27,14 +27,20 @@ flurc<Data>::flurc(int size) {
 }
 
 template<typename Data>
+void flurc<Data>::clear() {
+    read = buffer.begin();
+    write = buffer.begin();
+}
+
+template<typename Data>
 bool flurc<Data>::empty() {
-    return std::distance(write, read) == 0;
+    return std::distance(read, write) == 0;
 }
 
 template<typename Data>
 bool flurc<Data>::full() {
-    int distance = std::distance(write, read);
-    return distance == 1 || distance == -(buffer.capacity() - 1);
+    int distance = std::distance(read, write);
+    return distance == -1 || distance == (signed int)buffer.capacity() - 1;
 }
 
 template<typename Data>
@@ -48,7 +54,14 @@ bufferIterator<Data> flurc<Data>::increment(bufferIterator<Data> iterator) {
 
 template<typename Data>
 int flurc<Data>::length() {
-    return std::distance(read, write);
+    int distance = std::distance(read, write);
+
+    if (distance < 0) {
+        return std::distance(read, buffer.end()) +
+            std::distance(buffer.begin(), write);
+    } else {
+        return distance;
+    }
 }
 
 template<typename Data>

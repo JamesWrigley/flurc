@@ -30,6 +30,7 @@ class flurc {
   public:
     flurc(int);
 
+    void clear();
     bool empty();
     bool full();
     int length();
