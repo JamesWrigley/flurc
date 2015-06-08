@@ -19,6 +19,10 @@
 
 template<typename Data>
 flurc<Data>::flurc(int size) {
+    if (size < 0) {
+        throw std::invalid_argument("Negative buffer size");
+    }
+
     // We use the one-extra-slot approach to distinguish between full and empty
     // buffers.
     buffer.resize(size + 1);

@@ -21,6 +21,13 @@
 #include "flurc.hpp"
 
 int main() {
+    try {
+        flurc<int> foo(-1);
+        std::cout << "Fail: Buffer created with negative size" << std::endl;
+    } catch (std::invalid_argument) {
+        std::cout << "Success: Buffer created with negative size" << std::endl;
+    }
+
     flurc<int> buffer = flurc<int>(5);
     std::cout << "Success: Buffer created" << std::endl;
 
