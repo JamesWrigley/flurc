@@ -45,6 +45,76 @@ class flurc {
     bufferIterator<Data> write;
 };
 
-#include "flurc.cpp"
+template<typename Data>
+flurc<Data>::flurc(int size) {
+    if (size < 0) {
+        throw std::invalid_argument("Negative buffer size");
+    }
+
+    // We use the one-extra-slot approach to distinguish between full and empty
+    // buffers.
+    buffer.resize(size + 1);
+    write = buffer.begin();
+    read = buffer.begin();
+}
+
+template<typename Data>
+void flurc<Data>::clear() {
+    read = buffer.begin();
+    write = buffer.begin();
+}
+
+template<typename Data>
+bool flurc<Data>::empty() {
+    return std::distance(read, write) == 0;
+}
+
+template<typename Data>
+bool flurc<Data>::full() {
+    int distance = std::distance(read, write);
+    return distance == -1 || distance == (signed int)buffer.capacity() - 1;
+}
+
+template<typename Data>
+bufferIterator<Data> flurc<Data>::increment(bufferIterator<Data> iterator) {
+    if (std::distance(iterator, --buffer.end()) == 0) {
+        return buffer.begin();
+    } else {
+        return std::next(iterator);
+    }
+}
+
+template<typename Data>
+int flurc<Data>::length() {
+    int distance = std::distance(read, write);
+
+    if (distance < 0) {
+        return std::distance(read, buffer.end()) +
+            std::distance(buffer.begin(), write);
+    } else {
+        return distance;
+    }
+}
+
+template<typename Data>
+Data flurc<Data>::pop() {
+    if (empty()) {
+        throw std::out_of_range("Empty buffer");
+    } else {
+        Data contents = *read;
+        read = increment(read);
+        return contents;
+    }
+}
+
+template<typename Data>
+void flurc<Data>::push(Data contents) {
+    if (full()) {
+        throw std::out_of_range("Full buffer");
+    } else {
+        *write = contents;
+        write = increment(write);
+    }
+}
 
 #endif
