@@ -21,7 +21,7 @@ template<typename Data>
 flurc<Data>::flurc(int size) {
     // We use the one-extra-slot approach to distinguish between full and empty
     // buffers.
-    buffer.reserve(size + 1);
+    buffer.resize(size + 1);
     write = buffer.begin();
     read = buffer.begin();
 }
@@ -45,10 +45,10 @@ bool flurc<Data>::full() {
 
 template<typename Data>
 bufferIterator<Data> flurc<Data>::increment(bufferIterator<Data> iterator) {
-    if (iterator == --buffer.end()) {
+    if (std::distance(iterator, --buffer.end()) == 0) {
         return buffer.begin();
     } else {
-        return ++iterator;
+        return std::next(iterator);
     }
 }
 

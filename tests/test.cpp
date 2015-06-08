@@ -54,7 +54,7 @@ int main() {
     // Now we circle around
     buffer.push(13); // Length of 2
     buffer.push(21); // Length of 3
-    // buffer.push(34); // Length of 4, commented because of memory errors when circling
+    buffer.push(34); // Length of 4
     if (buffer.length() == 4) {
         std::cout << "Success: Length calculated correctly" << std::endl;
     } else {
