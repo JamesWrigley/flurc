@@ -1,5 +1,8 @@
 # flurc
-A header-only library implementing a circular buffer, written in C++.
+A header-only C++ library implementing a circular buffer. Run `make; ./test` to
+compile and run the test suite.
+
+Requires: GCC (must be a version with C++11 support).
 
 Functions provided:
 * **flurc**(int `size`) - Throws `std::invalid_argument` if `size` is negative
