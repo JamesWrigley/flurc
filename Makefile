@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-c -Wall -std=c++11 -g
+CXXFLAGS=-c -Wall -std=c++11 -g -O2
 
 all: test
 
