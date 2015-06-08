@@ -2,7 +2,7 @@
 A header-only library implementing a circular buffer, written in C++.
 
 Functions provided:
-* flurc(int `size`) - Throws `std::invalid_argument` if `size` is negative
+* **flurc**(int `size`) - Throws `std::invalid_argument` if `size` is negative
 * clear()
 * empty()
 * full()
