@@ -2,10 +2,11 @@
 A header-only C++ library implementing a circular buffer. Run `make; ./test` to
 compile and run the test suite.
 
-Requires: GCC (must be a version with C++11 support).
+Requires: A C++11 compliant compiler (the test suite uses GCC by default).
 
 Functions provided:
 * **flurc**(int `size`) - Throws `std::invalid_argument` if `size` is negative
+* **flurc**(std::initializer_list<T>)
 * clear()
 * empty()
 * full()
@@ -20,7 +21,7 @@ Example usage:
 
 int main()
 {
-  flurc<int> foo(3);
+  flurc<int> foo(3); // Or, flurc<int> foo{ 2, 4, 8 }
   foo.push(2);
   foo.push(4);
   foo.push(8);

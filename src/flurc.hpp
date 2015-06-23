@@ -21,6 +21,7 @@
 #define FLURC_H
 
 #include <vector>
+#include <initializer_list>
 
 template<typename Data>
 using bufferIterator = typename std::vector<Data>::iterator;
@@ -29,6 +30,7 @@ template<typename Data>
 class flurc {
   public:
     flurc(int);
+    flurc(std::initializer_list<Data>);
 
     void clear();
     bool empty();
@@ -55,6 +57,14 @@ flurc<Data>::flurc(int size) {
     // buffers.
     buffer.resize(size + 1);
     write = buffer.begin();
+    read = buffer.begin();
+}
+
+template<typename Data>
+flurc<Data>::flurc(std::initializer_list<Data> initial_values) {
+    buffer.assign(initial_values);
+    buffer.resize(buffer.size() + 1);
+    write = --buffer.end();
     read = buffer.begin();
 }
 

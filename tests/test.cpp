@@ -21,15 +21,22 @@
 #include "flurc.hpp"
 
 int main() {
+    // Test constructors
     try {
         flurc<int> foo(-1);
         std::cout << "Fail: Buffer created with negative size" << std::endl;
     } catch (std::invalid_argument) {
         std::cout << "Success: Buffer created with negative size" << std::endl;
     }
+    flurc<int> buffer(5);
+    std::cout << "Success: Buffer created with size" << std::endl;
 
-    flurc<int> buffer = flurc<int>(5);
-    std::cout << "Success: Buffer created" << std::endl;
+    flurc<int> initializer_list_test{ 1, 1, 2, 3, 5, 8, 13 };
+    if (initializer_list_test.length() == 7) {
+        std::cout << "Success: Buffer created with initializer list" << std::endl;
+    } else {
+        std::cout << "Fail: Buffer created with initializer list" << std::endl;
+    }
 
     // Test pushing elements
     buffer.push(1);
