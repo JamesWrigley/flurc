@@ -1,9 +1,9 @@
 dist: bionic
 language: c++
-compiler:
-  - clang++-9
-  - g++
-  - foo
+env:
+  - CXX=clang++-9
+  - CXX=g++
+  - CXX=foo
 
 script:
   - echo $CXX $CC
