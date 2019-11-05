@@ -1,0 +1,9 @@
+dist: bionic
+language: c++
+compiler:
+  - clang
+  - gcc
+
+script:
+  - make -j$(nproc)
+  - ./test
