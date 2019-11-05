@@ -3,7 +3,9 @@ language: c++
 compiler:
   - clang++-9
   - g++
+  - foo
 
 script:
+  - echo $CXX $CC
   - make -j$(nproc)
   - ./test
