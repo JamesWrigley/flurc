@@ -1,8 +1,8 @@
 dist: bionic
 language: c++
 compiler:
-  - clang
-  - gcc
+  - clang++-9
+  - g++
 
 script:
   - make -j$(nproc)
